@@ -27,7 +27,7 @@
 
 	chosen {
 		stdout-path = "serial0:115200n8";
-		bootargs-append = "swiotlb=1 coherent_pool=2M usb-storage.quirks=2c7c:0800:u";
+		bootargs-append = "swiotlb=1 coherent_pool=2M usb-storage.quirks=2c7c:0800:u cdc_ncm.bind=0";
 	};
 
 	vdda_phy: regulator-fixed {
@@ -46,13 +46,15 @@
 		regulator-always-on;
 	};
 
-	quectel_modem: quectel-modem {
-    compatible = "quectel,rg501q", "qcom,qmi-wwan";
-    status = "okay";
-    lte-power-gpio = <&tlmm 2 GPIO_ACTIVE_HIGH>;
-    lte-reset-gpio = <&tlmm 42 GPIO_ACTIVE_LOW>;
-    lte-poweron-gpio = <&tlmm 52 GPIO_ACTIVE_HIGH>;
+    quectel_modem: modem@0 {
+		compatible = "quectel,rg501q", "usb-net,cdc-qmi";
+		status = "okay";
+		reset-gpios = <&tlmm 42 GPIO_ACTIVE_LOW>;
+		power-gpios = <&tlmm 2 GPIO_ACTIVE_HIGH>;
+		poweron-gpios = <&tlmm 52 GPIO_ACTIVE_HIGH>;
+		label = "Quectel RG501Q";
 };
+
 
 	gpio-export {
 		compatible = "gpio-export";
@@ -63,7 +65,7 @@
 			gpios = <&tlmm 2 GPIO_ACTIVE_HIGH>;
 		};
 
-		lte-power-on {
+		lte-poweron {
 			gpio-export,name = "lte_power_on";
 			gpio-export,output = <0>;
 			gpios = <&tlmm 52 GPIO_ACTIVE_HIGH>;
