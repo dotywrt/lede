@@ -46,14 +46,17 @@
 		regulator-always-on;
 	};
 
-    quectel_modem: modem@0 {
-		compatible = "quectel,rg501q", "usb-net,cdc-qmi";
+	quectel_modem: modem@0 {
+		compatible = "quectel,rg501q", "quectel,rg500q", "usb-net,cdc-qmi";
 		status = "okay";
+		label = "Quectel RG501Q";
+        model = "Quectel RG501Q (AU/EU Universal)";
 		reset-gpios = <&tlmm 42 GPIO_ACTIVE_LOW>;
 		power-gpios = <&tlmm 2 GPIO_ACTIVE_HIGH>;
 		poweron-gpios = <&tlmm 52 GPIO_ACTIVE_HIGH>;
-		label = "Quectel RG501Q";
-};
+		power-on-delay-ms = <500>;
+		reset-delay-ms = <200>;
+	};
 
 
 	gpio-export {
